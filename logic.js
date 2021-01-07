@@ -48,31 +48,45 @@ function playRound(playerSelection, computerSelection) {
     }
   }
 
-  function game(){
-      let playerSelection = computerPlay();
-      let computerSelection = computerPlay();
-      let winCount = 0;
-      let lossCount = 0;
-      let result = "";
-      for(let i = 0; i < 5; i++){
-        result = playRound(playerSelection,computerSelection);
-        console.log(result);
-        if(result.toLowerCase().includes("win")){
-            winCount++;
-        }else{
-            lossCount++;
-        }
-        playerSelection = computerPlay();
-        computerSelection = computerPlay(); 
-      }
-      if(winCount > lossCount){
-        console.log("YOU WIN!");
-      }else if(winCount < lossCount){
-        console.log("YOU LOSS!");
-      }else{
-        console.log("YOU TIED!");
-      }
-  }
-  
-game();
+
+// buttons is a node list. It looks and acts much like an array.
+const buttons = document.querySelectorAll('button');
+const humanScore = document.getElementById('humanScore');
+const robotScore = document.getElementById('robotScore');
+let winCount = 0;
+let lossCount = 0;
+// we use the .forEach method to iterate through each button
+buttons.forEach((button) => {
+  // and for each one we add a 'click' listener
+  button.addEventListener('click', () => {
+    let playerSelection;
+    switch(button.id){
+        case "rockButton":
+            playerSelection = "rock";
+            break;
+        case "papersButton":
+            playerSelection = "papers";
+            break;
+        case "scissorsButton":
+            playerSelection = "scissors";
+            break;
+    }
+    result = playRound(playerSelection,computerPlay());
+    console.log(result);
+    if(result.toLowerCase().includes("win")){
+        winCount++;
+    }else{
+        lossCount++;
+    }
+    humanScore.innerText = "Human Score: " + winCount;
+    robotScore.innerText = "Robot Score: " + lossCount;
+    if(winCount >= 5){
+        humanScore.innerText = "Human Won! Refresh To Try Again";
+        robotScore.innerText = "Robot Loss!";
+    }else if(lossCount >= 5){
+        humanScore.innerText = "Human Loss! Refresh To Try Again";
+        robotScore.innerText = "Robot Won!";
+    }
+  });
+});
   
